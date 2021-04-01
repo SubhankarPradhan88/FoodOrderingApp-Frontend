@@ -1,0 +1,45 @@
+.header-container {
+    width: 98%;
+    height: auto;
+    padding: 10px;
+    margin: 0 auto;
+    font: 18px;
+    color: #ffffff;
+    background: #3b4347;
+    display: flex;
+    align-items: center;
+}
+.logo-wrapper, .search-wrapper {
+    width: 33%;
+}
+.header-search-container {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.search-icon {
+    padding: 0 7px;
+}
+input[name='searchByRestaurant'] {
+    color: #ffffff;
+    width: 250px;
+}
+.searchInput::after {
+    color: #ffffff;
+    border-bottom: 2px solid #ffffff !important;
+}
+.logo-padding {
+    padding: 5px;
+}
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.cursorPointer {
+    cursor: pointer;
+}
