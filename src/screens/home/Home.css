@@ -8,6 +8,23 @@
     text-align: center;
     padding-top: 30px;
 }
+.ratings-wrapper {
+    width: 100%;
+    padding-top: 20px;
+    display: flex;
+    justify-content:space-between;
+}
+.ratings-style {
+    width: auto;
+    height: auto;
+    padding: 5px 10px 5px 10px;
+    color: #ffffff;
+    background: #f4c430;
+}
+.price-tag-style {
+    color: #000000;
+    padding-top: 5px;
+}
 .dispNone {
     display: none;
 }
