@@ -14,6 +14,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
+        // Fetch Restaurant Details
         let fetchMediaInfoEndPoint = `${this.props.baseUrl}restaurant`;
         let dataMediaDetail = null;
         let xhrMediaInfo = new XMLHttpRequest();
@@ -31,7 +32,7 @@ class Home extends Component {
         xhrMediaInfo.send(dataMediaDetail);
     }
 
-     // Search feature based on the post's caption
+     // Search feature based on the restaurant's name
      searchRestaurantHandler = (searchText) => {
         this.setState({ searchString: searchText });
     }

@@ -50,7 +50,7 @@ class Header extends React.Component {
         }
     }
 
-    // Search based on caption of the post
+    // Call back to search function in the parent component
     onSearchEvent = (e) => {
         let { value } = e.target;
         this.props.searchHandler(value);

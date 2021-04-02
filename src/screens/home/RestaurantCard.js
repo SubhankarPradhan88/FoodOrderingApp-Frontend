@@ -40,6 +40,7 @@ export const RestaurantCard = (props) => {
     const classes = customStyles();
     const { foodAppMediaInfo, searchString } = props;
     let restaurantPosts = foodAppMediaInfo;
+    // Filter restaurant(s) based on search string
     let searchParam = searchString.trim().toLowerCase();
     if(searchParam.length > 0) {
         restaurantPosts = restaurantPosts.filter(function(post) {
