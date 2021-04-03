@@ -4,7 +4,61 @@ import Header from "../../common/header/Header";
 import "./Details.css";
 
 export default class Details extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      restaurantDetails: {},
+      categories: {},
+    };
+  }
+
+  componentDidMount() {
+    let data = null;
+    let that = this;
+    let xhrRestaurantDetails = new XMLHttpRequest();
+    xhrRestaurantDetails.addEventListener("readystatechange", function() {
+      if (
+        xhrRestaurantDetails.readyState === 4 &&
+        xhrRestaurantDetails.status === 200
+      ) {
+        let response = JSON.parse(xhrRestaurantDetails.responseText);
+        let categoriesList = [];
+        //creating a list of catergories wrt restaurant
+        response.categories.forEach((category) => {
+          categoriesList.push(category.category_name);
+        });
+        //populating the restaurant details in a required format.
+        let restaurantDetails = {
+          id: response.id,
+          name: response.restaurant_name,
+          locality: response.address.locality,
+          categoriesList: categoriesList.toString(),
+          rating: response.customer_rating,
+          noOfCustomerRated: response.number_customers_rated,
+          avgCost: response.average_price,
+          imageURL: response.photo_URL,
+        };
+
+        let categories = response.categories;
+        that.setState({
+          ...that.state,
+          restaurantDetails: restaurantDetails,
+          categories: categories,
+        });
+      }
+    });
+
+    //Calling the api to get details of the restaurant by id.
+    xhrRestaurantDetails.open(
+      "GET",
+      this.props.baseUrl + "restaurant/" + this.props.match.params.id
+    );
+    xhrRestaurantDetails.send(data);
+  }
+
   render() {
+    console.log(this.state.restaurantDetails);
+
     return (
       <Header
         displayItems={{
