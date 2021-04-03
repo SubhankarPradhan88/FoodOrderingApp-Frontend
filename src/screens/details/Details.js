@@ -1,9 +1,23 @@
+import { Grid, Paper, withStyles } from "@material-ui/core";
 import React, { Component } from "react";
 import Header from "../../common/header/Header";
 
 import "./Details.css";
 
-export default class Details extends Component {
+const styles = (theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: "lightgray",
+    border: "1px solid red",
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  },
+});
+
+class Details extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,12 +73,39 @@ export default class Details extends Component {
   render() {
     console.log(this.state.restaurantDetails);
 
+    const { classes } = this.props;
+
     return (
-      <Header
-        displayItems={{
-          displaySearchBar: false,
-        }}
-      />
+      <>
+        <Header
+          displayItems={{
+            displaySearchBar: false,
+          }}
+        />
+
+        <div className={classes.root}>
+          <Grid
+            container
+            // spacing={0}
+            alignItems={"stretch"}
+            alignContent={"stretch"}
+            justify={"space-evenly"}
+          >
+            <Grid item xs={12} sm={3}>
+              <Paper className={classes.paper}>
+                xs={12} sm={3}
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={9}>
+              <Paper className={classes.paper}>
+                xs={12} sm={3}
+              </Paper>
+            </Grid>
+          </Grid>
+        </div>
+      </>
     );
   }
 }
+
+export default withStyles(styles)(Details);
