@@ -44,6 +44,7 @@ class Home extends Component {
                 <Header 
                     searchHandler={this.searchRestaurantHandler} 
                     history={this.props.history}
+                    baseUrl={this.props.baseUrl}
                     displayItems = {{
                         displaySearchBar: true
                     }}
