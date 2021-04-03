@@ -7,6 +7,9 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import './Header.css';
 import { RegistrationModal } from './RegistrationModal';
@@ -34,6 +37,9 @@ const customStyles = (theme) => ({
     headerAvatar: {
         marginLeft: 10,
         cursor: 'pointer'
+    },
+    userNameStyle: {
+        color: '#ffffff'
     },
     selectDropDown: {
         width: 100,
@@ -70,10 +76,15 @@ class Header extends React.Component {
             emailRequired: "dispNone",
             registerFormPasswordRequired: "dispNone",
             contactNoRequired: "dispNone",
-            signUpSuccessResponse: {},
-            loginSuccessResponse: {},
             loggedInSuccess: false,
             menuIsOpen: false,
+            loginFailedMessage: '',
+            signUpFailedMessage: '',
+            vertical: 'bottom',
+            horizontal: 'left',
+            snackBarOpen: false,
+            loginSnackBarText: '',
+            signUpSnackBarText: '',
             loggedInCutomerFirstName: sessionStorage.getItem('firstName')
         }
     }
@@ -83,13 +94,31 @@ class Header extends React.Component {
         let { value } = e.target;
         this.props.searchHandler(value);
     }
-    
-    routeHandler = (e) => {
-        // Remove all saved data from sessionStorage
-        sessionStorage.clear();
-        // Route back to Login screen
-        this.props.history.push("/");
-        this.setState({ loggedInSuccess: false });
+    routeProfileScreen = () => {
+        this.props.history.push('/profile');
+    }
+    logoutHandler = async (e) => {
+        let accessToken = sessionStorage.getItem('access-token');
+        let logoutEndPoint = `${this.props.baseUrl}customer/logout`;
+        let logoutRequestBody = null;
+        let xhrInfo = new XMLHttpRequest();
+        let that = this;
+        xhrInfo.addEventListener('readystatechange', function() {
+            if(this.readyState === 4  && this.status === 200) {
+                let parsedData = JSON.parse(this.responseText);
+                that.setState({ loggedInSuccess: false });
+            }
+        })
+        xhrInfo.open("POST", logoutEndPoint);
+        xhrInfo.setRequestHeader("authorization", "Bearer " + accessToken);
+        xhrInfo.setRequestHeader("Cache-Control", "no-cache");
+        xhrInfo.setRequestHeader("Content-Type", "application/json");
+        xhrInfo.setRequestHeader("Access-Control-Allow-Origin", "*");
+        xhrInfo.send(logoutRequestBody);
+
+        sessionStorage.clear();      // Remove all saved data from sessionStorage
+        // Route back to Home screen
+        await this.props.history.push("/");
     }
     redirectHomeHandler = (e) => {
         this.props.history.push("/");
@@ -135,7 +164,6 @@ class Header extends React.Component {
     }
 
     tabChangeHandler = (event, value) => {
-        console.log('aa', value);
         this.setState({value});
     }
 
@@ -183,7 +211,7 @@ class Header extends React.Component {
             let loginAuthorization = window.btoa(this.state.loginContactNo + ":" + this.state.password);
 
             // Fetch Restaurant Details
-            let fetchMediaInfoEndPoint = `${this.props.baseUrl}customer/login`;
+            let loginEndPoint = `${this.props.baseUrl}customer/login`;
             let loginRequestBody = null;
             let xhrInfo = new XMLHttpRequest();
             let that = this;
@@ -194,17 +222,29 @@ class Header extends React.Component {
                     sessionStorage.setItem('access-token', xhrInfo.getResponseHeader('access-token'));
                     sessionStorage.setItem('firstName', parsedData.first_name);
                     that.setState({ 
-                        loginSuccessResponse: parsedData,
                         modalIsOpen: false,
                         menuIsOpen: false,
                         loginContactNo: '',
                         password: '',
                         loggedInSuccess: true,
+                        snackBarOpen: true,
+                        loginFailedMessage: '',
+                        // loginSnackBarText: parsedData.message,
+                        loginSnackBarText: 'Logged in successfully!',
                         loggedInCutomerFirstName: sessionStorage.getItem('firstName')
+                    });
+                }else {
+                    let parsedErrorResponse = JSON.parse(this.responseText);
+                    that.setState({ 
+                        loggedInSuccess: false,
+                        snackBarOpen: false,
+                        loginSnackBarText: '',
+                        loggedInCutomerFirstName: '',
+                        loginFailedMessage: parsedErrorResponse.message
                     });
                 }
             })
-            xhrInfo.open("POST", fetchMediaInfoEndPoint);
+            xhrInfo.open("POST", loginEndPoint);
             xhrInfo.setRequestHeader("authorization", "Basic " + loginAuthorization);
             xhrInfo.setRequestHeader("Cache-Control", "no-cache");
             xhrInfo.setRequestHeader("Content-Type", "application/json");
@@ -293,7 +333,7 @@ class Header extends React.Component {
         signUpObj.password = this.state.registerPassword;
 
         // Fetch Restaurant Details
-        let fetchMediaInfoEndPoint = `${this.props.baseUrl}customer/signup`;
+        let signUpEndPoint = `${this.props.baseUrl}customer/signup`;
         let signUpRequestBody = JSON.stringify(signUpObj);
         let xhrInfo = new XMLHttpRequest();
         let that = this;
@@ -301,7 +341,6 @@ class Header extends React.Component {
             if(this.readyState === 4  && this.status == 201) {
                 let parsedData = JSON.parse(this.responseText);
                 that.setState({ 
-                    signUpSuccessResponse: parsedData,
                     value: 0,
                     firstname: '',
                     lastname: '',
@@ -310,11 +349,22 @@ class Header extends React.Component {
                     contactNo: '',
                     emailError: '',
                     passwordError: '',
-                    contactNoError: ''
+                    contactNoError: '',
+                    signUpFailedMessage: '',
+                    snackBarOpen: true,
+                    // signUpSnackBarText: parsedData.status,
+                    signUpSnackBarText: 'Registered successfully! Please login now!'
+                });
+            }else {
+                let parsedErrorResponse = JSON.parse(this.responseText);
+                that.setState({ 
+                    snackBarOpen: false,
+                    signUpSnackBarText: '',
+                    signUpFailedMessage: parsedErrorResponse.message
                 });
             }
         })
-        xhrInfo.open("POST", fetchMediaInfoEndPoint);
+        xhrInfo.open("POST", signUpEndPoint);
         xhrInfo.setRequestHeader("Cache-Control", "no-cache");
         xhrInfo.setRequestHeader("Content-Type", "application/json");
         xhrInfo.setRequestHeader("Access-Control-Allow-Origin", "*");
@@ -333,22 +383,36 @@ class Header extends React.Component {
         return re.test(String(congtactNo).toLowerCase());
     }
 
+    //Snack bar close common handler
+    handleSnackBarClose = (event, reason) => {
+        this.setState({ snackBarOpen: false })
+    }
+
     render() {
         const { classes, displayItems } = this.props;
-        let { value, loginContactNo, password, firstname, lastname, email, registerPassword, contactNo, 
-            loggedInCutomerFirstName, emailError, passwordError, contactNoError, loginContactNoRequired, 
-            userPasswordRequired, firstnameRequired, modalIsOpen, menuIsOpen, anchorEl, lastnameRequired, 
-            emailRequired, registerFormPasswordRequired, contactNoRequired, loggedInSuccess } = this.state;
+        // let snackBarSuccessMessage = '';
+        let { value, loginContactNo, password, firstname, lastname, email, registerPassword, contactNo, loggedInCutomerFirstName, 
+            emailError, passwordError, contactNoError, loginContactNoRequired, vertical, horizontal, userPasswordRequired, 
+            firstnameRequired, modalIsOpen, menuIsOpen, anchorEl, lastnameRequired, emailRequired, registerFormPasswordRequired, 
+            contactNoRequired, loggedInSuccess, loginFailedMessage, signUpFailedMessage, snackBarOpen, loginSnackBarText, signUpSnackBarText } = this.state;
 
         let accessToken = sessionStorage.getItem('access-token');
 
+        // if(loginSnackBarText) {
+        //     let str = loginSnackBarText.toLowerCase();
+        //     snackBarSuccessMessage = `${str[0].toUpperCase()}${str.slice(1)}`;
+        // }else if(signUpSnackBarText) {
+        //     let str = signUpSnackBarText.toLowerCase();
+        //     snackBarSuccessMessage = `${str[0].toUpperCase()}${str.slice(1)}`;
+        // }
+        
         return (
             <React.Fragment>
                 <header className="header-container">
-                    <div className="logo-wrapper" onClick={displayItems['displaySearchBar'] ? this.redirectHomeHandler.bind(this) : null}>
+                    <div className="logo-wrapper" onClick={!displayItems['displaySearchBar'] ? this.redirectHomeHandler.bind(this) : null}>
                         <FastfoodIcon className={ !displayItems['displaySearchBar'] ? classes.logoPointer : classes.logo } />
                     </div>
-                    {displayItems['displaySearchBar'] && <div className="search-wrapper">
+                    <div className="search-wrapper">
                         <div className="search-container">
                             {displayItems['displaySearchBar'] && <div className="header-search-container">
                                 <div className="search-icon">
@@ -363,15 +427,15 @@ class Header extends React.Component {
                                 />
                             </div>}
                         </div>
-                    </div>}
+                    </div>
                     {(!loggedInSuccess && !accessToken) ? <div className="registration-wrapper">
                         <Button variant="contained" color="default" onClick={this.loginModalHandler}>
                             <AccountCircleIcon/> <span className="loginBtn-text-align">LOGIN</span>
                         </Button>
                     </div> :
                     <div className="registration-wrapper">
-                        <Button variant="contained" color="default" onClick={(e) => this.openMenuHandler(e)} aria-controls="simple-menu" aria-haspopup="true">
-                            <AccountCircleIcon/> <span className="loginBtn-text-align">{loggedInCutomerFirstName}</span>
+                        <Button onClick={(e) => this.openMenuHandler(e)} aria-controls="simple-menu" aria-haspopup="true" className={classes.userNameStyle}>
+                            <AccountCircleIcon/> <span className="firstname-text-style">{loggedInCutomerFirstName}</span>
                         </Button>
                         <Menu
                             id="simple-menu"
@@ -381,8 +445,8 @@ class Header extends React.Component {
                             onClose={this.closeMenuHandler}
                             className='menuDropDown'
                         >   
-                            <MenuItem>My Profile</MenuItem>
-                            <MenuItem onClick={(e) => this.routeHandler(e)}>Logout</MenuItem>
+                            {!displayItems['hideProfileOption'] && <MenuItem onClick={(e) => this.routeProfileScreen()}>My Profile</MenuItem>}
+                            <MenuItem onClick={(e) => this.logoutHandler(e)}>Logout</MenuItem>
                         </Menu>
                     </div>}
                 </header>
@@ -413,8 +477,32 @@ class Header extends React.Component {
                         lastnameRequired,
                         emailRequired,
                         registerFormPasswordRequired,
-                        contactNoRequired
+                        contactNoRequired,
+                        loginFailedMessage,
+                        signUpFailedMessage
                     }}
+                />
+                <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={snackBarOpen}
+                    autoHideDuration={5000}
+                    onClose={this.handleSnackBarClose}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    className={classes.snackBarCustomStyle}
+                    message={<span id="message-id">{loginSnackBarText ? loginSnackBarText : signUpSnackBarText}</span>}
+                    key={vertical + horizontal}
+                    action={[
+                        <IconButton
+                          key="close"
+                          aria-label="Close"
+                          color="inherit"
+                          onClick={this.handleSnackBarClose}
+                        >
+                        <CloseIcon />
+                        </IconButton>
+                    ]}
                 />
             </React.Fragment>
         )

@@ -33,6 +33,10 @@ const TabContainer = (props) => {
 
 // Custom styles - Material Card component
 const customStyles = makeStyles((theme) => ({
+    contactFieldStyle: {
+        marginTop: 10,
+        width: 250
+    },
     inputCustomWidth: {
         width: 250
     }
@@ -40,9 +44,9 @@ const customStyles = makeStyles((theme) => ({
 
 export const RegistrationModal = (props) => {
     const classes = customStyles();
-    let { value, loginContactNo, password, firstname, lastname, email, registerPassword, contactNo, 
+    let { value, loginContactNo, password, firstname, lastname, email, registerPassword, contactNo, signUpFailedMessage,
         emailError, passwordError, contactNoError, loginContactNoRequired, userPasswordRequired, firstnameRequired, 
-        lastnameRequired, emailRequired, registerFormPasswordRequired, contactNoRequired } = props.fieldStateValue;
+        lastnameRequired, emailRequired, registerFormPasswordRequired, contactNoRequired, loginFailedMessage } = props.fieldStateValue;
     
     let { modalIsOpen, closeModalHandler, tabChangeHandler, handleChange, registerClickHandler, loginClickHandler } = props.formHandler;
 
@@ -60,7 +64,7 @@ export const RegistrationModal = (props) => {
         </Tabs>
         {!value ?
             <TabContainer>
-                <FormControl required className={classes.inputCustomWidth}>
+                <FormControl required className={classes.contactFieldStyle}>
                     <InputLabel htmlFor="loginContactNo">Contact No </InputLabel>
                     <Input id="loginContactNo" type="text" onChange={(e) => handleChange(e, 'loginContactNo')} value={loginContactNo} />
                     <FormHelperText className={loginContactNoRequired}><span className="red">required</span></FormHelperText>
@@ -71,7 +75,8 @@ export const RegistrationModal = (props) => {
                     <Input id="password" type="password" onChange={(e) => handleChange(e, 'password')} value={password} />
                     <FormHelperText className={userPasswordRequired}><span className="red">required</span></FormHelperText>
                 </FormControl>
-                <p></p>
+                {!loginFailedMessage ? <p></p> :
+                <p className="red errorMsgStyle">{loginFailedMessage}</p>}
                 <Button variant="contained" color="primary" onClick={loginClickHandler}>
                     LOGIN
                 </Button>
@@ -106,7 +111,8 @@ export const RegistrationModal = (props) => {
                     <Input id="contactNo" type="number" onChange={(e) => handleChange(e, 'contactNo')} value={contactNo} />
                     <FormHelperText className={contactNoRequired}><span className="red">{contactNoError}</span></FormHelperText>
                 </FormControl>
-                <p></p>
+                {!signUpFailedMessage ? <p></p> :
+                <p className="red errorMsgStyle">{signUpFailedMessage}</p>}
                 <Button variant="contained" color="primary" onClick={registerClickHandler}>
                     REGISTER
                 </Button>

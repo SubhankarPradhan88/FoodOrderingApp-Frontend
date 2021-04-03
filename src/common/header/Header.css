@@ -1,27 +1,24 @@
 .header-container {
-    width: 99%;
+    width: 100%;
     height: auto;
-    padding: 10px;
+    padding: 7px 0px 7px 0;
     margin: 0 auto;
-    font: 18px;
     color: #ffffff;
     background: #3b4347;
     display: flex;
     align-items: center;
 }
-.logo-wrapper, .search-wrapper {
-    width: 32%;
+.logo-wrapper {
+    padding-left: 15px;
+    width: 33%;
 }
 .search-wrapper {
     width: 33%;
-    padding-left: 20px;
 }
 .registration-wrapper {
     width: 33%;
-    float: right;
-    display: flex;
-    justify-content: flex-end;
-    padding-left: 5px;
+    text-align: right;
+    padding-right: 12px;
 }
 .header-search-container {
     width: 90%;
@@ -57,9 +54,23 @@ input[name='searchByRestaurant'] {
 .loginBtn-text-align {
     padding-left: 10px;
 }
+.firstname-text-style {
+    font-size: 16px;
+    padding-left: 7px;
+    text-transform: capitalize;
+}
 .red {
     color: red;
 }
+.errorMsgStyle {
+    width: 260px;
+    margin-left: 10%;
+    text-align: left;
+    font-size: 12px;
+}
 .menuDropDown {
-    margin: 30px 0 0 20px;
+    margin-top: 30px;
+}
+.menuDropDown ul {
+    width: 120px;
 }
