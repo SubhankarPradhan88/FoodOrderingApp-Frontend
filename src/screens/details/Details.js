@@ -1,13 +1,12 @@
-import {
-  ButtonBase,
-  Grid,
-  Paper,
-  Typography,
-  withStyles,
-} from "@material-ui/core";
+import { ButtonBase, Grid, Typography, withStyles } from "@material-ui/core";
 import React, { Component } from "react";
 import Header from "../../common/header/Header";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "font-awesome/css/font-awesome.min.css";
+import "@fortawesome/fontawesome-free-solid";
+import "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-free-regular";
 import "./Details.css";
 
 const styles = (theme) => ({
@@ -89,21 +88,6 @@ class Details extends Component {
         />
 
         <div className={classes.root}>
-          {/* <Grid
-            container
-            // spacing={2}
-            alignItems="center"
-            // alignContent={"center"}
-            justify="flex-start"
-          >
-            <Grid container item xs={12} sm={2}>
-              <Paper variant="outlined" elevation="24">
-                <img src={this.state.restaurantDetails.imageURL} />
-              </Paper>
-            </Grid>
-            <Grid container item xs={12} sm={10}></Grid>
-          </Grid> */}
-
           <Grid container className="restaurant-details-container">
             <Grid item>
               <ButtonBase className="image">
@@ -156,7 +140,8 @@ class Details extends Component {
                 >
                   <div className="restaurant-rating-container">
                     <div className="restaurant-rating">
-                      {/* <FontAwesomeIcon icon="star" size="sm" color="black" /> */}
+                      <FontAwesomeIcon icon="star" size="sm" color="black" />{" "}
+                      &nbsp;
                       <Typography variant="subtitle1" component="p">
                         {this.state.restaurantDetails.rating}
                       </Typography>
@@ -178,7 +163,7 @@ class Details extends Component {
                 </Grid>
                 <Grid item xs={6} sm className="restaurant-avg-cost-container">
                   <div className="restaurant-avg-cost">
-                    {/* <i className="fa fa-inr" aria-hidden="true"></i> */}
+                    <i className="fa fa-inr" aria-hidden="true"></i> &nbsp;
                     <Typography
                       variant="subtitle2"
                       component="p"
