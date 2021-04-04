@@ -1,4 +1,10 @@
-import { Grid, Paper, withStyles } from "@material-ui/core";
+import {
+  ButtonBase,
+  Grid,
+  Paper,
+  Typography,
+  withStyles,
+} from "@material-ui/core";
 import React, { Component } from "react";
 import Header from "../../common/header/Header";
 
@@ -8,12 +14,11 @@ const styles = (theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: "lightgray",
-    border: "1px solid red",
   },
   paper: {
     padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
+    margin: "auto",
+    maxWidth: 500,
   },
 });
 
@@ -46,7 +51,7 @@ class Details extends Component {
           id: response.id,
           name: response.restaurant_name,
           locality: response.address.locality,
-          categoriesList: categoriesList.toString(),
+          categoriesList: categoriesList.join(", ").toString(),
           rating: response.customer_rating,
           noOfCustomerRated: response.number_customers_rated,
           avgCost: response.average_price,
@@ -84,22 +89,113 @@ class Details extends Component {
         />
 
         <div className={classes.root}>
-          <Grid
+          {/* <Grid
             container
-            // spacing={0}
-            alignItems={"stretch"}
-            alignContent={"stretch"}
-            justify={"space-evenly"}
+            // spacing={2}
+            alignItems="center"
+            // alignContent={"center"}
+            justify="flex-start"
           >
-            <Grid item xs={12} sm={3}>
-              <Paper className={classes.paper}>
-                xs={12} sm={3}
+            <Grid container item xs={12} sm={2}>
+              <Paper variant="outlined" elevation="24">
+                <img src={this.state.restaurantDetails.imageURL} />
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={9}>
-              <Paper className={classes.paper}>
-                xs={12} sm={3}
-              </Paper>
+            <Grid container item xs={12} sm={10}></Grid>
+          </Grid> */}
+
+          <Grid container className="restaurant-details-container">
+            <Grid item>
+              <ButtonBase className="image">
+                <img
+                  className="img"
+                  alt="complex"
+                  src={this.state.restaurantDetails.imageURL}
+                />
+              </ButtonBase>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm
+              container
+              direction="column"
+              className="restaurant-details"
+            >
+              <Grid item xs={12} sm>
+                <div className="restaurant-name">
+                  <Typography
+                    variant="h5"
+                    component="h5"
+                    className="restaurantName"
+                  >
+                    {this.state.restaurantDetails.name}
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    component="p"
+                    className="restaurantLocation"
+                  >
+                    {this.state.restaurantDetails.locality}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    component="p"
+                    className="restaurantCategory"
+                  >
+                    {this.state.restaurantDetails.categoriesList}
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12} sm container direction="row" spacing={2}>
+                <Grid
+                  item
+                  xs={6}
+                  sm
+                  className="restaurant-rating-cost-container"
+                >
+                  <div className="restaurant-rating-container">
+                    <div className="restaurant-rating">
+                      {/* <FontAwesomeIcon icon="star" size="sm" color="black" /> */}
+                      <Typography variant="subtitle1" component="p">
+                        {this.state.restaurantDetails.rating}
+                      </Typography>
+                    </div>
+                    <Typography
+                      variant="subtitle2"
+                      component="p"
+                      className="textRatingCost"
+                    >
+                      AVERAGE RATING BY{" "}
+                      {
+                        <span className="restaurant-NoOfCustomerRated">
+                          {this.state.restaurantDetails.noOfCustomerRated}
+                        </span>
+                      }{" "}
+                      CUSTOMERS
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item xs={6} sm className="restaurant-avg-cost-container">
+                  <div className="restaurant-avg-cost">
+                    {/* <i className="fa fa-inr" aria-hidden="true"></i> */}
+                    <Typography
+                      variant="subtitle2"
+                      component="p"
+                      className="avgCost"
+                    >
+                      {this.state.restaurantDetails.avgCost}
+                    </Typography>
+                  </div>
+                  <Typography
+                    variant="subtitle2"
+                    component="p"
+                    className="textRatingCost"
+                  >
+                    AVERAGE COST FOR TWO PEOPLE
+                  </Typography>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </div>
