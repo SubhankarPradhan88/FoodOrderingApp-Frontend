@@ -4,8 +4,8 @@ import Controller from './screens/Controller';
 import './index.css';
 
 ReactDOM.render(
-    <React.StrictMode>
+    <React.Fragment>
         <Controller />
-    </React.StrictMode>,
+    </React.Fragment>,
     document.getElementById('root')
 );

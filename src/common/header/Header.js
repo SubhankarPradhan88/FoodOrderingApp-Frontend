@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 import './Header.css';
 import { RegistrationModal } from './RegistrationModal';
@@ -39,7 +40,26 @@ const customStyles = (theme) => ({
         cursor: 'pointer'
     },
     userNameStyle: {
-        color: '#ffffff'
+        color: '#ffffff',
+        // Breakpoints for different screen resolutions
+        [theme.breakpoints.down('xs')]: {
+            marginLeft: -14,
+        },
+        [theme.breakpoints.down('sm')]: {
+            marginLeft: -11,
+        },
+        [theme.breakpoints.up('md')]: {
+            marginLeft: -10,
+        },
+        [theme.breakpoints.up('lg')]: {
+            marginLeft: 0,
+        }
+    },
+    searchText: {
+        color: '#ffffff',
+        '&:after': {
+            borderBottom: '2px solid white',
+        }
     },
     selectDropDown: {
         width: 100,
@@ -94,9 +114,11 @@ class Header extends React.Component {
         let { value } = e.target;
         this.props.searchHandler(value);
     }
+    // Route to Profile screen
     routeProfileScreen = () => {
         this.props.history.push('/profile');
     }
+    // Logout handler
     logoutHandler = async (e) => {
         let accessToken = sessionStorage.getItem('access-token');
         let logoutEndPoint = `${this.props.baseUrl}customer/logout`;
@@ -162,11 +184,10 @@ class Header extends React.Component {
             contactNoRequired: "dispNone"
         });
     }
-
     tabChangeHandler = (event, value) => {
         this.setState({value});
     }
-
+    // Registration form handler
     handleChange = (e, check) => {
         switch(check) {
             case 'loginContactNo':
@@ -191,6 +212,7 @@ class Header extends React.Component {
                 this.setState({contactNo: e.target.value.trim()});
         }
     }
+    // Login form handler
     loginClickHandler = () => {
         let loginCredentialSuccess = false;
         if(!this.state.loginContactNo) {
@@ -324,6 +346,7 @@ class Header extends React.Component {
         }
         validationSuccess && this.customerRegistrationHandler();
     }
+    // Save customer details
     customerRegistrationHandler = () => {
         let signUpObj = {};
         signUpObj.contact_number = this.state.contactNo;
@@ -352,7 +375,6 @@ class Header extends React.Component {
                     contactNoError: '',
                     signUpFailedMessage: '',
                     snackBarOpen: true,
-                    // signUpSnackBarText: parsedData.status,
                     signUpSnackBarText: 'Registered successfully! Please login now!'
                 });
             }else {
@@ -370,60 +392,58 @@ class Header extends React.Component {
         xhrInfo.setRequestHeader("Access-Control-Allow-Origin", "*");
         xhrInfo.send(signUpRequestBody);
     }
+    // Check for valid email
     validateEmail = (email) => {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
+    // Check for valid password
     validatePassword = (password) => {
         const re = /^(?=.*[\w])(?=.*[\W])[\w\W]{4,}$/;
         return re.test(String(password).toLowerCase());
     }
-    validateContactNo = (congtactNo) => {
+    // Check for valid contact no.
+    validateContactNo = (contactNo) => {
         const re = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
-        return re.test(String(congtactNo).toLowerCase());
+        return re.test(String(contactNo).toLowerCase());
     }
-
-    //Snack bar close common handler
+    //  Snack bar close common handler
     handleSnackBarClose = (event, reason) => {
         this.setState({ snackBarOpen: false })
     }
 
     render() {
         const { classes, displayItems } = this.props;
-        // let snackBarSuccessMessage = '';
         let { value, loginContactNo, password, firstname, lastname, email, registerPassword, contactNo, loggedInCutomerFirstName, 
             emailError, passwordError, contactNoError, loginContactNoRequired, vertical, horizontal, userPasswordRequired, 
             firstnameRequired, modalIsOpen, menuIsOpen, anchorEl, lastnameRequired, emailRequired, registerFormPasswordRequired, 
             contactNoRequired, loggedInSuccess, loginFailedMessage, signUpFailedMessage, snackBarOpen, loginSnackBarText, signUpSnackBarText } = this.state;
 
         let accessToken = sessionStorage.getItem('access-token');
-
-        // if(loginSnackBarText) {
-        //     let str = loginSnackBarText.toLowerCase();
-        //     snackBarSuccessMessage = `${str[0].toUpperCase()}${str.slice(1)}`;
-        // }else if(signUpSnackBarText) {
-        //     let str = signUpSnackBarText.toLowerCase();
-        //     snackBarSuccessMessage = `${str[0].toUpperCase()}${str.slice(1)}`;
-        // }
         
         return (
             <React.Fragment>
                 <header className="header-container">
-                    <div className="logo-wrapper" onClick={!displayItems['displaySearchBar'] ? this.redirectHomeHandler.bind(this) : null}>
-                        <FastfoodIcon className={ !displayItems['displaySearchBar'] ? classes.logoPointer : classes.logo } />
+                    <div className="logo-wrapper">
+                        <FastfoodIcon 
+                            className={ !displayItems['displaySearchBar'] ? classes.logoPointer : classes.logo } 
+                            onClick={!displayItems['displaySearchBar'] ? this.redirectHomeHandler.bind(this) : null} 
+                        />
                     </div>
-                    <div className="search-wrapper">
+                    <div className={displayItems['displaySearchBar'] ? "search-wrapper" : "search-container-display"}>
                         <div className="search-container">
-                            {displayItems['displaySearchBar'] && <div className="header-search-container">
-                                <div className="search-icon">
-                                    <SearchIcon style={{ color: "#FFFFFF" }} />
-                                </div>
-                                <Input
-                                    name="searchByRestaurant"
-                                    onChange={(e) => this.onSearchEvent(e)}
-                                    className="searchInput"
+                            {displayItems['displaySearchBar'] && <div className="header-search-container search-container-width">
+                                <Input 
+                                    className={classes.searchText}
                                     inputProps={{'aria-label': 'search'}}
-                                    placeholder="Search by Restaurant Name"
+                                    startAdornment={
+                                        <InputAdornment position="start">
+                                            <SearchIcon id="search-icon" htmlColor="#ffffff"></SearchIcon>
+                                        </InputAdornment>
+                                    }
+                                    fullWidth={true} 
+                                    placeholder="Search by Restaurant Name" 
+                                    onChange={(e) => this.onSearchEvent(e)}
                                 />
                             </div>}
                         </div>

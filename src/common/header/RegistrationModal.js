@@ -14,8 +14,8 @@ import './Header.css';
 
 const modalStyles = {
     content: {
-        top: '50%',
-        left: '50%',
+        top: '45%',
+        left: '49%',
         right: 'auto',
         bottom: 'auto',
         marginRight: '-50%',

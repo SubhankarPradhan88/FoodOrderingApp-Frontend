@@ -12,20 +12,32 @@ import './Home.css';
 // Custom styles - Material Card component
 const customStyles = makeStyles((theme) => ({
     root: {
-        margin: '1%',
         width: 280,
         height: 'auto',
-        float: 'left'
-      },
-      media: {
+        float: 'left',
+        // Breakpoints for different screen resolutions
+        [theme.breakpoints.down('xs')]: {
+            margin: '0% 1% 4% 1%',
+        },
+        [theme.breakpoints.down('sm')]: {
+            margin: '0% 1% 3% 1%',
+        },
+        [theme.breakpoints.up('md')]: {
+            margin: '1%',
+        },
+        [theme.breakpoints.up('lg')]: {
+            margin: '1%',
+        }
+    },
+    media: {
         height: 150
-      },
-      starIcon: {
+    },
+    starIcon: {
         width: 20,
         height: 20,
         margin: '0px 5px -5px -2px'
-      },
-      content: {
+    },
+    content: {
         margin: 0,
         color: '#000000',
         display: 'flex',
