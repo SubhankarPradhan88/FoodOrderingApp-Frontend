@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -6,7 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import GradeIcon from '@material-ui/icons/Grade';
 import CardMedia from '@material-ui/core/CardMedia';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar, faRupeeSign} from '@fortawesome/free-solid-svg-icons';
 import './Home.css';
 
 // Custom styles - Material Card component
@@ -81,9 +82,9 @@ export const RestaurantCard = (props) => {
                                 </Typography>
                                 <div className="ratings-wrapper">
                                     <div>
-                                        <div className="ratings-style"><GradeIcon className={classes.starIcon} />{restaurantPost.customer_rating} ({restaurantPost.number_customers_rated})</div>
+                                        <div className="ratings-style"><FontAwesomeIcon icon={faStar} /> {restaurantPost.customer_rating} ({restaurantPost.number_customers_rated})</div>
                                     </div>
-                                    <div className="price-tag-style"><span>&#8377;</span> {restaurantPost.average_price} for two</div>
+                                    <div className="price-tag-style"><FontAwesomeIcon icon={faRupeeSign} />{restaurantPost.average_price} for two</div>
                                 </div>
                             </CardContent>
                         </CardActionArea>
