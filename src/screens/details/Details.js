@@ -1,8 +1,10 @@
 import {
   ButtonBase,
   Divider,
+  Fade,
   Grid,
   IconButton,
+  Snackbar,
   Typography,
   withStyles,
 } from "@material-ui/core";
@@ -15,7 +17,7 @@ import "@fortawesome/fontawesome-free-solid";
 import "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-free-regular";
 import AddIcon from "@material-ui/icons/Add";
-
+import CloseIcon from "@material-ui/icons/Close";
 import "./Details.css";
 
 const styles = (theme) => ({
@@ -40,6 +42,7 @@ class Details extends Component {
       cartAmount: 0,
       snackBarOpen: false,
       snackBarMessage: "",
+      transition: Fade,
     };
   }
 
@@ -93,10 +96,10 @@ class Details extends Component {
     cartItems.forEach((cartItem) => {
       //running a loop to find if the item is already present in the cart.
       if (cartItem.id === item.id) {
-        // Checking if the parameter item.id matches with the item in the cart.
+        // if passed item and the looping item is same we increase the quantity by 1
         itemPresentInCart = true;
         cartItem.quantity++; //increasing only the quantity
-        cartItem.totalAmount = cartItem.price * cartItem.quantity; //Updating the price
+        cartItem.totalAmount = cartItem.price * cartItem.quantity; //Updating the total price of an item
       }
     });
     if (!itemPresentInCart) {
@@ -124,6 +127,18 @@ class Details extends Component {
       snackBarOpen: true,
       snackBarMessage: "Item added to cart!",
       cartAmount: totalAmount,
+    });
+  };
+
+  //event handler to update the snackbar status
+  onSnackBarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({
+      ...this.state,
+      snackBarMessage: "",
+      snackBarOpen: false,
     });
   };
 
@@ -314,6 +329,30 @@ class Details extends Component {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* snackbar msg component */}
+
+        <div>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            open={this.state.snackBarOpen}
+            autoHideDuration={1500}
+            onClose={this.onSnackBarClose}
+            TransitionComponent={this.state.transition}
+            ContentProps={{
+              "aria-describedby": "message-id",
+            }}
+            message={<span id="message-id">{this.state.snackBarMessage}</span>}
+            action={
+              <IconButton color="inherit" onClick={this.onSnackBarClose}>
+                <CloseIcon />
+              </IconButton>
+            }
+          />
         </div>
       </>
     );
