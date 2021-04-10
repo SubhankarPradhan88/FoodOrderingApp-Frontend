@@ -2,6 +2,7 @@ import {
   ButtonBase,
   Divider,
   Grid,
+  IconButton,
   Typography,
   withStyles,
 } from "@material-ui/core";
@@ -13,6 +14,8 @@ import "font-awesome/css/font-awesome.min.css";
 import "@fortawesome/fontawesome-free-solid";
 import "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-free-regular";
+import AddIcon from "@material-ui/icons/Add";
+
 import "./Details.css";
 
 const styles = (theme) => ({
@@ -35,6 +38,8 @@ class Details extends Component {
       categories: [],
       cartList: [],
       cartAmount: 0,
+      snackBarOpen: false,
+      snackBarMessage: "",
     };
   }
 
@@ -81,6 +86,46 @@ class Details extends Component {
     );
     xhrRestaurantDetails.send(data);
   }
+
+  itemAddButtonClickHandler = (item) => {
+    let cartItems = this.state.cartList;
+    let itemPresentInCart = false;
+    cartItems.forEach((cartItem) => {
+      //running a loop to find if the item is already present in the cart.
+      if (cartItem.id === item.id) {
+        // Checking if the parameter item.id matches with the item in the cart.
+        itemPresentInCart = true;
+        cartItem.quantity++; //increasing only the quantity
+        cartItem.totalAmount = cartItem.price * cartItem.quantity; //Updating the price
+      }
+    });
+    if (!itemPresentInCart) {
+      //pushing the item into the cart if it not exists in the cart
+      let cartItem = {
+        id: item.id,
+        name: item.item_name,
+        price: item.price,
+        totalAmount: item.price,
+        quantity: 1,
+        itemType: item.item_type,
+      };
+      cartItems.push(cartItem);
+    }
+    //re-iterating the amount of the cart
+    let totalAmount = 0;
+    cartItems.forEach((cartItem) => {
+      totalAmount = totalAmount + cartItem.totalAmount;
+    });
+
+    //refreshing the state
+    this.setState({
+      ...this.state,
+      cartList: cartItems,
+      snackBarOpen: true,
+      snackBarMessage: "Item added to cart!",
+      cartAmount: totalAmount,
+    });
+  };
 
   render() {
     console.log(this.state.restaurantDetails);
@@ -208,6 +253,63 @@ class Details extends Component {
                     {category.category_name}
                   </Typography>
                   <Divider />
+                  <Grid container>
+                    {category.item_list.map((item) => (
+                      <Grid
+                        container
+                        item
+                        className="menu-item-container"
+                        key={item.id}
+                      >
+                        <Grid item xs={1}>
+                          {" "}
+                          <FontAwesomeIcon
+                            icon="circle"
+                            size="sm"
+                            color={
+                              item.item_type === "NON_VEG"
+                                ? "#a0413e"
+                                : "#67bd68"
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Typography
+                            variant="subtitle1"
+                            component="p"
+                            className={classes.menuItemName}
+                          >
+                            {item.item_name[0].toUpperCase() +
+                              item.item_name.slice(1)}
+                          </Typography>
+                        </Grid>
+
+                        <Grid item xs={3}>
+                          <div className="item-price">
+                            <i className="fa fa-inr" aria-hidden="true"></i>
+                            &nbsp;
+                            <Typography
+                              variant="subtitle1"
+                              component="p"
+                              className={classes.itemPrice}
+                            >
+                              {item.price.toFixed(2)}
+                            </Typography>
+                          </div>
+                        </Grid>
+
+                        <Grid item xs={2}>
+                          <IconButton
+                            className={classes.addButton}
+                            aria-label="add"
+                            onClick={() => this.itemAddButtonClickHandler(item)}
+                          >
+                            <AddIcon />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </Grid>
                 </div>
               ))}
             </div>

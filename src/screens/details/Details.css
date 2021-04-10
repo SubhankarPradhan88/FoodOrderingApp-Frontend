@@ -114,6 +114,16 @@ align-items: "center"; */
 .restaurantCategory {
   padding: "8px 0px 8px 0px";
 }
+.menu-item-container {
+  display: flex;
+  align-items: center;
+}
+
+.item-price {
+  display: flex;
+  align-items: baseline;
+  margin-left: auto;
+}
 
 @media screen and (max-width: 600px) {
   .menu-details-cart-container {
