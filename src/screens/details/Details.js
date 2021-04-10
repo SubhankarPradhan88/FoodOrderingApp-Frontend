@@ -203,7 +203,7 @@ class Details extends Component {
                 <Grid
                   item
                   xs={6}
-                  sm
+                  sm={5}
                   className="restaurant-rating-cost-container"
                 >
                   <div className="restaurant-rating-container">
@@ -229,7 +229,12 @@ class Details extends Component {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item xs={6} sm className="restaurant-avg-cost-container">
+                <Grid
+                  item
+                  xs={6}
+                  sm={5}
+                  className="restaurant-avg-cost-container"
+                >
                   <div className="restaurant-avg-cost">
                     <i className="fa fa-inr" aria-hidden="true"></i> &nbsp;
                     <Typography
@@ -253,6 +258,7 @@ class Details extends Component {
           </Grid>
         </div>
 
+        {/* elements to display the menu contents of a restaurant */}
         <div>
           <div className="menu-details-cart-container">
             <div className="menu-details">
