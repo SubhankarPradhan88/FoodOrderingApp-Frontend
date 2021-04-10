@@ -19,6 +19,7 @@ import "@fortawesome/fontawesome-free-regular";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 import "./Details.css";
+import Cart from "../../common/cart/Cart";
 
 const styles = (theme) => ({
   root: {
@@ -336,6 +337,10 @@ class Details extends Component {
             </div>
           </div>
         </div>
+
+        {/* cart component */}
+
+        <Cart />
 
         {/* snackbar msg component */}
 
