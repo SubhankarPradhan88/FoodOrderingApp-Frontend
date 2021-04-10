@@ -17,11 +17,13 @@
 .ratings-style {
     width: auto;
     height: auto;
-    padding: 5px 10px 5px 10px;
+    font-size: 13px;
+    padding: 6px 10px 6px 10px;
     color: #ffffff;
     background: #f4c430;
 }
 .price-tag-style {
+    font-size: 13px;
     color: #000000;
     padding-top: 5px;
 }
