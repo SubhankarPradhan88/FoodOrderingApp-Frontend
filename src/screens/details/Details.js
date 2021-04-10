@@ -1,4 +1,10 @@
-import { ButtonBase, Grid, Typography, withStyles } from "@material-ui/core";
+import {
+  ButtonBase,
+  Divider,
+  Grid,
+  Typography,
+  withStyles,
+} from "@material-ui/core";
 import React, { Component } from "react";
 import Header from "../../common/header/Header";
 
@@ -26,7 +32,9 @@ class Details extends Component {
     super(props);
     this.state = {
       restaurantDetails: {},
-      categories: {},
+      categories: [],
+      cartList: [],
+      cartAmount: 0,
     };
   }
 
@@ -183,6 +191,27 @@ class Details extends Component {
               </Grid>
             </Grid>
           </Grid>
+        </div>
+
+        <div>
+          <div className="menu-details-cart-container">
+            <div className="menu-details">
+              {this.state.categories.map((
+                category //Iterating through every category from the array of categories
+              ) => (
+                <div key={category.id}>
+                  <Typography
+                    variant="overline"
+                    component="p"
+                    className={classes.categoryName}
+                  >
+                    {category.category_name}
+                  </Typography>
+                  <Divider />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </>
     );
