@@ -17,3 +17,6 @@
 .hideBadgeonModal {
   z-index: 0;
 }
+.showBadgeonModal {
+  z-index: 1;
+}
