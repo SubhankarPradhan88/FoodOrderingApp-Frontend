@@ -316,25 +316,27 @@ class Details extends Component {
         </div>
 
         {/* elements to display the menu contents of a restaurant */}
-        <Grid container justify="space-around">
+        <Grid
+          container
+          justify="space-around"
+          alignItems="stretch"
+          className="menu-items-cart-container"
+        >
           {/* grid to display the menu items according to category */}
           <Grid
             item
-            xs={12}
-            sm={6}
-            // className="menu-details-cart-container"
-            className="margin-20px"
+            xs={11}
+            sm={5}
+            justify="space-around"
+            alignItems="stretch"
+            className="menu-items-container"
           >
-            <div className="menu-details">
+            <div className="menu-items">
               {this.state.categories.map((
                 category //Iterating through every category from the array of categories
               ) => (
                 <div key={category.id}>
-                  <Typography
-                    variant="overline"
-                    component="p"
-                    className={classes.categoryName}
-                  >
+                  <Typography variant="overline" component="div">
                     {category.category_name}
                   </Typography>
                   <Divider />
@@ -347,7 +349,6 @@ class Details extends Component {
                         key={item.id}
                       >
                         <Grid item xs={1}>
-                          {" "}
                           <FontAwesomeIcon
                             icon="circle"
                             size="sm"
@@ -362,10 +363,9 @@ class Details extends Component {
                           <Typography
                             variant="subtitle1"
                             component="p"
-                            className={classes.menuItemName}
+                            className="menu-item-name"
                           >
-                            {item.item_name[0].toUpperCase() +
-                              item.item_name.slice(1)}
+                            {item.item_name}
                           </Typography>
                         </Grid>
 
@@ -401,7 +401,7 @@ class Details extends Component {
           </Grid>
 
           {/* cart component */}
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={11} sm={5} className="cart-container">
             <Cart
               cartAmount={this.state.cartAmount}
               cartSize={this.state.cartSize}
@@ -409,7 +409,7 @@ class Details extends Component {
               restaurantDetails={this.state.restaurantDetails}
               cartModifyEvent={this.cartModifyEventHandler.bind(this)}
               snackbarEvent={this.onSnackBarEventHandler.bind(this)}
-              cartName="checkoutt"
+              cartName="checkout"
             />
           </Grid>
         </Grid>

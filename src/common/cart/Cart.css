@@ -36,6 +36,13 @@
 .hideBadgeonModal {
   z-index: 0;
 }
+
+.margin-auto {
+  margin-top: 500px;
+  margin-bottom: 0px;
+  margin-left: 50px;
+  margin-right: auto;
+}
 @media (max-width: 1000px) {
   .myCart {
     margin-top: 2%;
