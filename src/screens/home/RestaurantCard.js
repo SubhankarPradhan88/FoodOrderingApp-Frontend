@@ -4,7 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import GradeIcon from '@material-ui/icons/Grade';
 import CardMedia from '@material-ui/core/CardMedia';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faRupeeSign} from '@fortawesome/free-solid-svg-icons';
@@ -65,7 +64,11 @@ export const RestaurantCard = (props) => {
         <div className="image-card-alignment">
             {(restaurantPosts && restaurantPosts.length > 0) && restaurantPosts.map((restaurantPost) => {
                 return (
-                    <Card className={classes.root} key={'restaurantPost' + restaurantPost.id}>
+                    <Card 
+                        className={classes.root} 
+                        key={'restaurantPost' + restaurantPost.id} 
+                        onClick={() => props.redirectDetailsHandler(restaurantPost.id)}
+                    >
                         <CardActionArea>
                             <CardMedia
                                 className={classes.media}

@@ -11,11 +11,8 @@ import {
 import React, { Component } from "react";
 import Header from "../../common/header/Header";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "font-awesome/css/font-awesome.min.css";
-import "@fortawesome/fontawesome-free-solid";
-import "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-free-regular";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar, faRupeeSign} from '@fortawesome/free-solid-svg-icons';
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 import "./Details.css";
@@ -92,7 +89,7 @@ class Details extends Component {
     );
     xhrRestaurantDetails.send(data);
   }
-
+  // Handle Cart item 
   itemAddButtonClickHandler = (item) => {
     let cartItems = this.state.cartList;
     let itemPresentInCart = false;
@@ -207,6 +204,8 @@ class Details extends Component {
     return (
       <>
         <Header
+          history={this.props.history}
+          baseUrl={this.props.baseUrl}
           displayItems={{
             displaySearchBar: false,
           }}
@@ -265,7 +264,7 @@ class Details extends Component {
                 >
                   <div className="restaurant-rating-container">
                     <div className="restaurant-rating">
-                      <FontAwesomeIcon icon="star" size="sm" color="black" />{" "}
+                    <FontAwesomeIcon icon={faStar} size="sm" color="black" />{" "}
                       &nbsp;
                       <Typography variant="subtitle1" component="p">
                         {this.state.restaurantDetails.rating}
@@ -293,7 +292,7 @@ class Details extends Component {
                   className="restaurant-avg-cost-container"
                 >
                   <div className="restaurant-avg-cost">
-                    <i className="fa fa-inr" aria-hidden="true"></i> &nbsp;
+                  <FontAwesomeIcon icon={faRupeeSign} /> &nbsp;
                     <Typography
                       variant="subtitle2"
                       component="p"
@@ -403,6 +402,8 @@ class Details extends Component {
           {/* cart component */}
           <Grid item xs={11} sm={6} md={5} className="cart-container">
             <Cart
+              history={this.props.history}
+              baseUrl={this.props.baseUrl}
               cartAmount={this.state.cartAmount}
               cartSize={this.state.cartSize}
               cartList={this.state.cartList}
