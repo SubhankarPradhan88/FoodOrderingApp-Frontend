@@ -12,6 +12,8 @@ import {
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStopCircle, faRupeeSign } from "@fortawesome/free-solid-svg-icons";
 
 import React, { Component } from "react";
 
@@ -79,7 +81,14 @@ export default class Cart extends Component {
     this.props.cartModifyEvent("add", addCartItem, index);
   };
 
+  toggleBadgeHandler() {
+    return sessionStorage.getItem("registrationModalState")
+      ? "hideBadgeonModal"
+      : "showBadgeonModal";
+  }
+
   render() {
+    let badgeFlag = sessionStorage.getItem("registrationModalState");
     return (
       <>
         <Card className="cardRoot">
@@ -89,15 +98,14 @@ export default class Cart extends Component {
                 {this.state.cartName === "checkout" ? (
                   <Grid item container justify="flex-start" alignItems="center">
                     <Grid item xs={1}>
-                      {this.state.badgeVisible && <Badge
-                        className="hideBadgeonModal"
+                      <Badge
                         badgeContent={
                           this.state.cartSize === 0 ? "0" : this.state.cartSize
                         }
                         color="primary"
                       >
                         <ShoppingCartIcon />
-                      </Badge>}
+                      </Badge>
                     </Grid>
                     <Grid item xs={5}>
                       <span
@@ -152,29 +160,19 @@ export default class Cart extends Component {
                           }}
                         >
                           {cartItem.itemType === "VEG" ? (
-                            <span>
-                              <span>
-                                <i
-                                  className="fa fa-stop-circle-o"
-                                  style={{
-                                    color: "#a0413e",
-                                    width: "1",
-                                    height: "1",
-                                  }}
-                                  aria-hidden="true"
-                                ></i>
-                              </span>
-                            </span>
+                            <FontAwesomeIcon
+                              icon={faStopCircle}
+                              style={{
+                                color: "#67bd68",
+                              }}
+                            />
                           ) : (
-                            <span>
-                              <span>
-                                <i
-                                  className="fa fa-stop-circle-o"
-                                  style={{ color: "#67bd68" }}
-                                  aria-hidden="true"
-                                ></i>
-                              </span>
-                            </span>
+                            <FontAwesomeIcon
+                              icon={faStopCircle}
+                              style={{
+                                color: "#a0413e",
+                              }}
+                            />
                           )}
                         </span>
                       </Grid>
@@ -275,7 +273,7 @@ export default class Cart extends Component {
                             paddingTop: "10px",
                           }}
                         >
-                          <i className="fa fa-inr"></i>
+                          <FontAwesomeIcon icon={faRupeeSign} />
                           <span>{cartItem.totalAmount.toFixed(2)}</span>
                         </span>
                         {/* </Grid> */}
