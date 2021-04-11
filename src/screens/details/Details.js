@@ -401,7 +401,7 @@ class Details extends Component {
           </Grid>
 
           {/* cart component */}
-          <Grid item xs={11} sm={5} className="cart-container">
+          <Grid item xs={11} sm={6} md={5} className="cart-container">
             <Cart
               cartAmount={this.state.cartAmount}
               cartSize={this.state.cartSize}
