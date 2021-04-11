@@ -22,7 +22,7 @@ export default class Cart extends Component {
       cartList: this.props.cartList,
       cartAmount: this.props.cartAmount,
       cartSize: this.props.cartSize,
-      restaurantDetails: this.props.restaurantDetails,
+      restaurantDetails: JSON.stringify(this.props.restaurantDetails),
       badgeVisible: sessionStorage.getItem('registrationModalState')
     };
 
@@ -54,12 +54,14 @@ export default class Cart extends Component {
       } else {
         sessionStorage.setItem(
           "restaurantDetails",
-          JSON.stringify(this.state.restaurantDetails)
+          this.state.restaurantDetails
         );
         //Redirecting to Checkout page
         this.props.history.push({
           pathname: "/checkout",
           state: {
+            restaurantName: this.state.restaurantDetails.name,
+            restaurantId: this.state.restaurantDetails.id,
             chcartItems: this.state.cartList,
             totalCartItemsValue: this.state.cartAmount,
           },
