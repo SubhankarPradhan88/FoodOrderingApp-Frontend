@@ -89,7 +89,7 @@ class Details extends Component {
     );
     xhrRestaurantDetails.send(data);
   }
-
+  // Handle Cart item 
   itemAddButtonClickHandler = (item) => {
     let cartItems = this.state.cartList;
     let itemPresentInCart = false;
