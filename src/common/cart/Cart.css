@@ -1,0 +1,19 @@
+.cardRoot {
+  padding-left: 5%;
+}
+
+.hideBadgeonModal {
+  z-index: 0;
+}
+
+.foodType {
+  padding-left: 10px;
+}
+.addRemove {
+  display: flex;
+  flex-direction: row;
+}
+
+.hideBadgeonModal {
+  z-index: 0;
+}

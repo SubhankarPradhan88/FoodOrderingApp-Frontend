@@ -19,6 +19,7 @@ import "@fortawesome/fontawesome-free-regular";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 import "./Details.css";
+import Cart from "../../common/cart/Cart";
 
 const styles = (theme) => ({
   root: {
@@ -40,10 +41,12 @@ class Details extends Component {
       categories: [],
       cartList: [],
       cartAmount: 0,
+      cartSize: 0,
       snackBarOpen: false,
       snackBarMessage: "",
       transition: Fade,
     };
+    this.cartModifyEventHandler = this.cartModifyEventHandler.bind(this);
   }
 
   componentDidMount() {
@@ -116,8 +119,10 @@ class Details extends Component {
     }
     //re-iterating the amount of the cart
     let totalAmount = 0;
+    let cartQuantity = 0;
     cartItems.forEach((cartItem) => {
       totalAmount = totalAmount + cartItem.totalAmount;
+      cartQuantity = cartQuantity + cartItem.quantity;
     });
 
     //refreshing the state
@@ -127,6 +132,7 @@ class Details extends Component {
       snackBarOpen: true,
       snackBarMessage: "Item added to cart!",
       cartAmount: totalAmount,
+      cartSize: cartQuantity,
     });
   };
 
@@ -142,9 +148,60 @@ class Details extends Component {
     });
   };
 
-  render() {
-    console.log(this.state.restaurantDetails);
+  async cartModifyEventHandler(cartOperation, cartItem, cartIndex) {
+    let that = this;
+    if (cartOperation === "add") {
+      const myCartList = that.state.cartList;
+      let findItem = myCartList[cartIndex];
+      if (findItem !== undefined) {
+        findItem.quantity = findItem.quantity + 1;
+        findItem.totalAmount = findItem.totalAmount + findItem.price;
+      }
+      myCartList[cartIndex] = findItem;
+      await that.setState({
+        ...that.state,
+        cartAmount: that.state.cartAmount + findItem.price,
+        cartSize: that.state.cartSize + 1,
+        cartList: myCartList,
+        snackBarMessage: "Item quantity increased by 1!",
+        snackBarOpen: true,
+      });
+    } else if (cartOperation === "remove") {
+      const myCartList = that.state.cartList;
+      let findItem = myCartList[cartIndex];
+      let snackMessage = "";
+      if (findItem !== undefined) {
+        findItem.quantity = findItem.quantity - 1;
+        findItem.totalAmount = findItem.totalAmount - findItem.price;
+      }
+      if (findItem.quantity <= 0) {
+        myCartList.splice(cartIndex, 1);
+        snackMessage = "Item removed from cart!";
+      } else {
+        myCartList[cartIndex] = findItem;
+        snackMessage = "Item quantity decreased by 1!";
+      }
+      console.log(that.state.cartAmount - findItem.price);
+      console.log(that.state.cartSize - 1);
+      await that.setState({
+        ...that.state,
+        cartAmount: that.state.cartAmount - findItem.price,
+        cartSize: that.state.cartSize - 1,
+        cartList: myCartList,
+        snackBarMessage: snackMessage,
+        snackBarOpen: true,
+      });
+    }
+  }
 
+  async onSnackBarEventHandler(message) {
+    await this.setState({
+      snackBarMessage: message,
+      snackBarOpen: true,
+    });
+  }
+
+  render() {
     const { classes } = this.props;
 
     return (
@@ -154,7 +211,7 @@ class Details extends Component {
             displaySearchBar: false,
           }}
         />
-
+        {/* Element to provide details of the restaurant */}
         <div className={classes.root}>
           <Grid container className="restaurant-details-container">
             <Grid item>
@@ -259,18 +316,27 @@ class Details extends Component {
         </div>
 
         {/* elements to display the menu contents of a restaurant */}
-        <div>
-          <div className="menu-details-cart-container">
-            <div className="menu-details">
+        <Grid
+          container
+          justify="space-around"
+          alignItems="stretch"
+          className="menu-items-cart-container"
+        >
+          {/* grid to display the menu items according to category */}
+          <Grid
+            item
+            xs={11}
+            sm={5}
+            justify="space-around"
+            alignItems="stretch"
+            className="menu-items-container"
+          >
+            <div className="menu-items">
               {this.state.categories.map((
                 category //Iterating through every category from the array of categories
               ) => (
                 <div key={category.id}>
-                  <Typography
-                    variant="overline"
-                    component="p"
-                    className={classes.categoryName}
-                  >
+                  <Typography variant="overline" component="div">
                     {category.category_name}
                   </Typography>
                   <Divider />
@@ -283,7 +349,6 @@ class Details extends Component {
                         key={item.id}
                       >
                         <Grid item xs={1}>
-                          {" "}
                           <FontAwesomeIcon
                             icon="circle"
                             size="sm"
@@ -298,10 +363,9 @@ class Details extends Component {
                           <Typography
                             variant="subtitle1"
                             component="p"
-                            className={classes.menuItemName}
+                            className="menu-item-name"
                           >
-                            {item.item_name[0].toUpperCase() +
-                              item.item_name.slice(1)}
+                            {item.item_name}
                           </Typography>
                         </Grid>
 
@@ -334,8 +398,21 @@ class Details extends Component {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          </Grid>
+
+          {/* cart component */}
+          <Grid item xs={11} sm={6} md={5} className="cart-container">
+            <Cart
+              cartAmount={this.state.cartAmount}
+              cartSize={this.state.cartSize}
+              cartList={this.state.cartList}
+              restaurantDetails={this.state.restaurantDetails}
+              cartModifyEvent={this.cartModifyEventHandler.bind(this)}
+              snackbarEvent={this.onSnackBarEventHandler.bind(this)}
+              cartName="checkout"
+            />
+          </Grid>
+        </Grid>
 
         {/* snackbar msg component */}
 
