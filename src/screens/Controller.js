@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "../screens/home/Home";
 import { Profile } from "../screens/profile/Profile";
 import Details from "./details/Details";
+import Checkout from "../screens/checkout/Checkout";
+
 
 class Controller extends Component {
   constructor(props) {
@@ -28,6 +30,11 @@ class Controller extends Component {
             exact
             path="/restaurant/:id"
             render={(props) => <Details {...props} baseUrl={this.baseUrl} />}
+          />
+          <Route
+            exact
+            path="/checkout"
+            render={(props) => <Checkout {...props} baseUrl={this.baseUrl} />}
           />
         </div>
       </Router>
