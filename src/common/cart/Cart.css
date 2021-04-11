@@ -1,0 +1,53 @@
+.myCart {
+  margin-top: 2%;
+  width: 40%;
+  margin-left: 6%;
+  display: inline-block;
+}
+
+.cardRoot {
+  padding-left: 5%;
+}
+
+.hideBadgeonModal {
+  z-index: 0;
+}
+
+.myCartItemList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.itemNameinCart {
+  text-transform: capitalize;
+  width: 40%;
+  vertical-align: middle;
+  margin-top: 2%;
+}
+
+.addRemove {
+  display: flex;
+  flex-direction: row;
+}
+
+.hideBadgeonModal {
+  z-index: 0;
+}
+@media (max-width: 1000px) {
+  .myCart {
+    margin-top: 2%;
+    width: 80%;
+    margin-left: 2%;
+    display: inline-block;
+  }
+
+  .itemNameinCart {
+    text-transform: capitalize;
+    width: 40%;
+    vertical-align: middle;
+    margin-top: 2%;
+  }
+}

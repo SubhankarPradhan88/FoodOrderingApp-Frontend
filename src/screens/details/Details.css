@@ -125,6 +125,11 @@ align-items: "center"; */
   margin-left: auto;
 }
 
+.margin-20px {
+  margin: 20px;
+  border: 1px solid blue;
+}
+
 @media screen and (max-width: 600px) {
   .menu-details-cart-container {
     flex-direction: column;
