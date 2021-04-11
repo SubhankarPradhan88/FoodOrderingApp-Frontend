@@ -32,9 +32,13 @@ class Home extends Component {
         xhrMediaInfo.send(dataMediaDetail);
     }
 
-     // Search feature based on the restaurant's name
-     searchRestaurantHandler = (searchText) => {
+    // Search feature based on the restaurant's name
+    searchRestaurantHandler = (searchText) => {
         this.setState({ searchString: searchText });
+    }
+    // Route to Details screen
+    redirectDetailsHandler = (postId) => {
+        this.props.history.push(`/restaurant/${postId}`)
     }
 
     render() {
@@ -49,7 +53,11 @@ class Home extends Component {
                         displaySearchBar: true
                     }}
                 />
-                <RestaurantCard foodAppMediaInfo={foodAppMediaInfo} searchString={searchString} />
+                <RestaurantCard 
+                    foodAppMediaInfo={foodAppMediaInfo} 
+                    searchString={searchString} 
+                    redirectDetailsHandler={this.redirectDetailsHandler}
+                />
             </React.Fragment>
         )
     }

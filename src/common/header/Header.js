@@ -150,6 +150,7 @@ class Header extends React.Component {
             value: 0,
             modalIsOpen: true
         });
+        sessionStorage.setItem('registrationModalState', true);
     }
     // Open menu drop down
     openMenuHandler = (event) => {
@@ -183,6 +184,7 @@ class Header extends React.Component {
             registerFormPasswordRequired: "dispNone",
             contactNoRequired: "dispNone"
         });
+        sessionStorage.setItem('registrationModalState', false);
     }
     tabChangeHandler = (event, value) => {
         this.setState({value});

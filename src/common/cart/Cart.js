@@ -23,6 +23,7 @@ export default class Cart extends Component {
       cartAmount: this.props.cartAmount,
       cartSize: this.props.cartSize,
       restaurantDetails: this.props.restaurantDetails,
+      badgeVisible: sessionStorage.getItem('registrationModalState')
     };
 
     this.addAnItemFromCart = this.addAnItemFromCart.bind(this);
@@ -86,7 +87,7 @@ export default class Cart extends Component {
                 {this.state.cartName === "checkout" ? (
                   <Grid item container justify="flex-start" alignItems="center">
                     <Grid item xs={1}>
-                      <Badge
+                      {this.state.badgeVisible && <Badge
                         className="hideBadgeonModal"
                         badgeContent={
                           this.state.cartSize === 0 ? "0" : this.state.cartSize
@@ -94,7 +95,7 @@ export default class Cart extends Component {
                         color="primary"
                       >
                         <ShoppingCartIcon />
-                      </Badge>
+                      </Badge>}
                     </Grid>
                     <Grid item xs={5}>
                       <span
