@@ -11,12 +11,13 @@ import {
 import React, { Component } from "react";
 import Header from "../../common/header/Header";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faRupeeSign} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faRupeeSign } from "@fortawesome/free-solid-svg-icons";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 import "./Details.css";
 import Cart from "../../common/cart/Cart";
+import { faStopCircle } from "@fortawesome/fontawesome-free-regular";
 
 const styles = (theme) => ({
   root: {
@@ -89,7 +90,7 @@ class Details extends Component {
     );
     xhrRestaurantDetails.send(data);
   }
-  // Handle Cart item 
+  // Handle Cart item
   itemAddButtonClickHandler = (item) => {
     let cartItems = this.state.cartList;
     let itemPresentInCart = false;
@@ -264,7 +265,7 @@ class Details extends Component {
                 >
                   <div className="restaurant-rating-container">
                     <div className="restaurant-rating">
-                    <FontAwesomeIcon icon={faStar} size="sm" color="black" />{" "}
+                      <FontAwesomeIcon icon={faStar} size="sm" color="black" />{" "}
                       &nbsp;
                       <Typography variant="subtitle1" component="p">
                         {this.state.restaurantDetails.rating}
@@ -292,7 +293,7 @@ class Details extends Component {
                   className="restaurant-avg-cost-container"
                 >
                   <div className="restaurant-avg-cost">
-                  <FontAwesomeIcon icon={faRupeeSign} /> &nbsp;
+                    <FontAwesomeIcon icon={faRupeeSign} /> &nbsp;
                     <Typography
                       variant="subtitle2"
                       component="p"
@@ -349,8 +350,7 @@ class Details extends Component {
                       >
                         <Grid item xs={1}>
                           <FontAwesomeIcon
-                            icon="circle"
-                            size="sm"
+                            icon={faStopCircle}
                             color={
                               item.item_type === "NON_VEG"
                                 ? "#a0413e"
@@ -370,7 +370,7 @@ class Details extends Component {
 
                         <Grid item xs={3}>
                           <div className="item-price">
-                            <i className="fa fa-inr" aria-hidden="true"></i>
+                            <FontAwesomeIcon icon={faRupeeSign} />
                             &nbsp;
                             <Typography
                               variant="subtitle1"
