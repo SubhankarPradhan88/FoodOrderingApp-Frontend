@@ -20,3 +20,20 @@
 .showBadgeonModal {
   z-index: 1;
 }
+.price-font-size {
+  font-size: 16px;
+  font-weight: bold;
+  color: grey;
+  display: inline-block;
+  padding-top: 10px;
+}
+/* Media queries for screen size uptil width 640px */
+@media only screen and (max-width: 640px) {
+  .price-font-size {
+    font-size: 14px;
+    font-weight: bold;
+    color: grey;
+    display: inline-block;
+    padding-top: 10px;
+  }
+}

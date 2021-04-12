@@ -33,27 +33,19 @@ export default class Cart extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-    this.setState({
-      //   cartList: nextProps.cartList,
-      //   cartAmount: nextProps.cartAmount,
-      //   cartSize: nextProps.cartSize,
-      //   restaurantDetails: nextProps.restaurantDetails,
-      ...nextProps,
-    });
+    this.setState({ ...nextProps });
   }
 
   checkOutCart = (e) => {
     const myCartItem = this.state.cartList;
-    if (myCartItem.length <= 0) {
+    if(myCartItem.length <= 0) {
       this.props.snackbarEvent("Please add an item to your cart!");
-
       return;
-    } else {
-      if (sessionStorage.getItem("access-token") === null) {
+    }else {
+      if(sessionStorage.getItem("access-token") === null) {
         this.props.snackbarEvent("Please login first!");
         return;
-      } else {
+      }else {
         sessionStorage.setItem(
           "restaurantDetails",
           this.state.restaurantDetails
@@ -214,7 +206,7 @@ export default class Cart extends Component {
                             >
                               <RemoveIcon
                                 style={{
-                                  fontSize: 22,
+                                  fontSize: 14,
                                   fontWeight: "bold",
                                   fill: "black",
                                 }}
@@ -225,11 +217,9 @@ export default class Cart extends Component {
                         <Grid item>
                           <Typography
                             style={{
-                              PaddingTop: "10%",
-                              fontSize: 20,
+                              fontSize: 14,
                               fill: "grey",
                               display: "block",
-                              paddingTop: "5px",
                             }}
                           >
                             {cartItem.quantity}
@@ -247,7 +237,7 @@ export default class Cart extends Component {
                             >
                               <AddIcon
                                 style={{
-                                  fontSize: 22,
+                                  fontSize: 14,
                                   fontWeight: "bold",
                                   fill: "black",
                                 }}
@@ -263,20 +253,12 @@ export default class Cart extends Component {
                         justify="flex-end"
                         alignItems="center"
                       >
-                        {/* <Grid item justify="flex-end" alignItems="center"> */}
                         <span
-                          style={{
-                            fontWeight: "bold",
-                            color: "grey",
-                            fontSize: "120%",
-                            display: "inline-block",
-                            paddingTop: "10px",
-                          }}
+                          className="price-font-size"
                         >
-                          <FontAwesomeIcon icon={faRupeeSign} />
-                          <span>{cartItem.totalAmount.toFixed(2)}</span>
+                          <FontAwesomeIcon icon={faRupeeSign} />&nbsp;
+                          {cartItem.totalAmount.toFixed(2)}
                         </span>
-                        {/* </Grid> */}
                       </Grid>
                     </Grid>
                   </div>
@@ -306,8 +288,8 @@ export default class Cart extends Component {
                       gutterBottom
                       className="bold"
                     >
-                      <i className="fa fa-inr"></i>
-                      <span> {this.state.cartAmount.toFixed(2)}</span>
+                      <FontAwesomeIcon icon={faRupeeSign} />
+                      <span>{this.state.cartAmount.toFixed(2)}</span>
                     </Typography>
                   </Grid>
                 </Grid>
